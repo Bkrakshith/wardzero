@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients</title>
-  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. It gives a simulated hospital with a surgical wing, Isaac Sim and MuJoCo, a safety layer and navigation.">
+  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. Version 2 follows UK hospital guidance more closely: fire doors, bed lifts, a ward with en-suite rooms and a small A&amp;E, in Isaac Sim and MuJoCo.">
   <meta property="og:title" content="WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bkrakshith.github.io/wardzero/">
@@ -26,17 +26,18 @@
       <h1 class="title publication-title">WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients</h1>
       <p class="publication-authors">Built by: <a href="https://github.com/Bkrakshith">Rakshith Bangalore Kumaraswamy</a></p>
       <div class="link-buttons">
-        <a class="button is-dark is-rounded" href="https://github.com/Bkrakshith/hospital-sim"><span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a>
+        <a class="button is-dark is-rounded" href="https://github.com/Bkrakshith/hospital-sim/tree/v2"><span class="icon"><i class="fab fa-github"></i></span><span>Code (v2)</span></a>
+        <a class="button is-light is-rounded" href="v1/"><span class="icon"><i class="fas fa-clock-rotate-left"></i></span><span>Version 1.0</span></a>
         <a class="button is-dark is-rounded" href="#repos"><span class="icon"><i class="fas fa-cubes"></i></span><span>Repositories</span></a>
       </div>
-      <span class="status-badge">Open source (Apache-2.0) &middot; repository: hospital-sim &middot; simulation stage</span>
+      <span class="status-badge">Open source (Apache-2.0) &middot; repository: hospital-sim &middot; version 2.0 &middot; simulation stage</span>
     </div>
   </div>
 </section>
 
 <nav class="section-nav">
   <div class="container">
-    <a href="#overview">Overview</a><a href="#world">World</a><a href="#simulation">Simulation</a>
+    <a href="#overview">Overview</a><a href="#v2">Version 2</a><a href="#world">World</a><a href="#simulation">Simulation</a>
     <a href="#training">Training</a><a href="#teleop">Teleoperation and safety</a><a href="#autonomy">Autonomy</a>
     <a href="#status">Status</a><a href="#disclaimer">Disclaimer</a>
   </div>
@@ -51,7 +52,8 @@
       hospital, two simulators, a safety layer and navigation. Users can bring
       their own robot, controller or task.</p>
       <p>The simulated hospital has a surgical wing. The wing has corridors, pre-operative bays, a recovery ward, a
-      sterile store, a scrub room and an operating theatre.</p>
+      sterile store, a scrub room and an operating theatre. Version 2 adds a ward with en-suite rooms, a small A&amp;E
+      department, fire doors and bed lifts.</p>
       <p>All parts use the low-level interface of the real robot. The controller sends motor targets on
       <code>/lowcmd</code> at 500 Hz. It reads the joint states on <code>/lowstate</code>. Because of this, the same
       software runs in MuJoCo, in Isaac Sim and on the real robot.</p>
@@ -83,6 +85,62 @@
   </div>
 </section>
 
+<section class="section v2" id="v2">
+  <div class="container is-max-desktop">
+    <span class="version-pill">Version 2.0</span>
+    <h2 class="title is-3">Version 2: closer to UK hospital guidance</h2>
+    <div class="content">
+      <p>Version 2 changes the hospital so that it follows UK guidance for hospital buildings more closely. Feedback on
+      version 1 showed that lifts and fire doors are difficult for hospital robots. Version 2 adds them with physics in
+      Isaac Sim and in MuJoCo.</p>
+      <p>The guidance comes from NHS England and the UK Government: HTM 05-02 (fire safety), HTM 08-02 (lifts),
+      HBN 00-04 (circulation), HBN 04-01 (adult in-patient wards), HBN 15-01 (A&amp;E) and Approved Document M
+      (access).</p>
+    </div>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead><tr><th>Area</th><th>Guidance</th><th>What version 2 adds</th></tr></thead>
+        <tbody>
+          <tr><td>Fire doors</td><td>HTM 05-02</td><td>Up to 22 fire doorsets with physics. The leaves close themselves. Magnets hold the corridor doors open and release on the fire alarm. Magnets never hold the stair doors open.</td></tr>
+          <tr><td>Fire compartments</td><td>HTM 05-02</td><td>The main building has three fire compartments. The surgical wing has two fire zones and a final exit to outside.</td></tr>
+          <tr><td>Lifts</td><td>HTM 08-02</td><td>Two pairs of bed lifts: car 1800 x 2700 mm, door 1400 mm. Each pair has a call button, door timing, a light curtain and fire recall.</td></tr>
+          <tr><td>Ward</td><td>HBN 04-01</td><td>A 6-bed ward. Each bedroom has an en-suite. A nurse base and two workstations with observation windows. Utility rooms, a pantry, an assisted shower and a day room.</td></tr>
+          <tr><td>A&amp;E</td><td>HBN 15-01</td><td>A small A&amp;E with its own ambulance entrance. Resus with two bays, majors cubicles, triage, minors, X-ray and a walk-in reception.</td></tr>
+          <tr><td>Circulation</td><td>HBN 00-04</td><td>The link corridor between the hospital and the surgical wing is now 4 m wide, so two beds can pass.</td></tr>
+          <tr><td>Access</td><td>Approved Document M</td><td>Door opening forces are less than 30 N. Lift buttons are between 0.9 m and 1.2 m above the floor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content">
+      <p>Each door and lift runs the same control code in the two simulators. A robot can push a door, press a lift
+      button and wait for the lift doors. The lidar sees the doors move. A fire-alarm topic closes all fire doors in
+      approximately 6 seconds.</p>
+      <p><strong>Version 2 follows the guidance for robot testing. It is not a certified design, and no fire engineer
+      has examined it.</strong> Some items do not meet the guidance. The ward bedroom doors are 1.2 m wide, and the
+      guidance recommends 1.55 m for beds. The A&amp;E has no decontamination room and no children's area. The stairs
+      have no lobbies, and the model has no upper floors. The file <code>uk-guidance-compliance.md</code> in
+      hospital-sim-env lists each check and each gap.</p>
+    </div>
+    <div class="v2-gallery">
+        <figure class="v2-card"><img src="static/images/v2/Cam_WardB1EnSuite.jpg" alt="Ward bedroom. The door at the back opens to the en-suite." loading="lazy"><figcaption><strong>Ward bedroom.</strong> The door at the back opens to the en-suite.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_WS1Glazing.jpg" alt="Nurse workstation. An observation window looks into two bedrooms." loading="lazy"><figcaption><strong>Nurse workstation.</strong> An observation window looks into two bedrooms.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_WardCorridor.jpg" alt="Ward corridor. The view from the nurse base at the ward entrance." loading="lazy"><figcaption><strong>Ward corridor.</strong> The view from the nurse base at the ward entrance.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_Resus.jpg" alt="A&E resus. Two bays with trolleys, monitors and crash trolleys." loading="lazy"><figcaption><strong>A&E resus.</strong> Two bays with trolleys, monitors and crash trolleys.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_AEEntrance.jpg" alt="A&E ambulance entrance. The ambulance bay has a canopy and its own lane." loading="lazy"><figcaption><strong>A&E ambulance entrance.</strong> The ambulance bay has a canopy and its own lane.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_AEWaiting.jpg" alt="A&E walk-in waiting. The walk-in reception is off the main lobby." loading="lazy"><figcaption><strong>A&E walk-in waiting.</strong> The walk-in reception is off the main lobby.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Fx_WardEntranceDoors.jpg" alt="Compartment fire doors. Magnets hold the doors open. The fire alarm releases them." loading="lazy"><figcaption><strong>Compartment fire doors.</strong> Magnets hold the doors open. The fire alarm releases them.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Fx_StairDoor.jpg" alt="Stair fire door. The door closes itself. Magnets never hold it open." loading="lazy"><figcaption><strong>Stair fire door.</strong> The door closes itself. Magnets never hold it open.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Fx_MainLiftBank.jpg" alt="Bed lifts, main building. Two bed lifts with a call button between them." loading="lazy"><figcaption><strong>Bed lifts, main building.</strong> Two bed lifts with a call button between them.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_HospitalToWing.jpg" alt="Link corridor. The corridor to the surgical wing is now 4 m wide." loading="lazy"><figcaption><strong>Link corridor.</strong> The corridor to the surgical wing is now 4 m wide.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_LiftLobby.jpg" alt="Bed lifts, surgical wing. A lift lobby with a fire door to the corridor." loading="lazy"><figcaption><strong>Bed lifts, surgical wing.</strong> A lift lobby with a fire door to the corridor.</figcaption></figure>
+        <figure class="v2-card"><img src="static/images/v2/Cam_CrossCorridor.jpg" alt="Cross-corridor fire door. The door divides the wing corridor into two fire zones." loading="lazy"><figcaption><strong>Cross-corridor fire door.</strong> The door divides the wing corridor into two fire zones.</figcaption></figure>
+    </div>
+    <p class="version-links">Version 2 code: branch <a href="https://github.com/Bkrakshith/hospital-sim/tree/v2"><code>v2</code></a>.
+    Version 1.0 code: tag <a href="https://github.com/Bkrakshith/hospital-sim/tree/v1.0"><code>v1.0</code></a>.
+    Version 1.0 page: <a href="v1/">archived copy</a>.</p>
+  </div>
+</section>
+
 <section class="section alt" id="world">
   <div class="container is-max-desktop">
     <h2 class="title is-3">World</h2>
@@ -92,7 +150,7 @@
       Lightwheel SimReady.</p>
       <p>A generator makes the scene from the layout file. A build check stops the build if furniture blocks a door.
       It also stops the build if two props overlap or if a prop is outside its room. The floor has one level. The
-      corridors are 2 m and 4 m wide. The doors have 2 m of clear width.</p>
+      corridors of the wing are 4 m wide. In version 2, fire doors close most of the wing doorways.</p>
       <p>The scene uses a reduced copy of the assets, so it can run on an 8 GB graphics card. The light levels are
       calibrated, so that the white walls do not show as plain white.</p>
     </div>
@@ -182,6 +240,8 @@
     <div class="content">
       <p>The master repository, hospital-sim, contains the interface contract, the environment script and the list
       of component repositories. It checks out the component repositories in one folder.</p>
+      <p>Version 2 is on the <code>v2</code> branch of hospital-sim, hospital-sim-env, g1-isaac-sim, g1-mujoco-sim and
+      hospital-sim-ros2. Version 1.0 stays on the <code>main</code> branch, with the tag <code>v1.0</code>.</p>
     </div>
     <div class="table-container">
       <table class="table is-fullwidth is-hoverable">
@@ -212,6 +272,10 @@
           <tr><td><span class="tag done">done</span></td><td>Mode manager with control lease, watchdog, emergency-stop gate and speed zones</td></tr>
           <tr><td><span class="tag done">done</span></td><td>Keyboard and webcam teleoperation</td></tr>
           <tr><td><span class="tag done">done</span></td><td>Mapping and navigation</td></tr>
+          <tr><td><span class="tag done">v2</span></td><td>Fire doors, fire compartments and bed lifts with physics in the two simulators (HTM 05-02, HTM 08-02)</td></tr>
+          <tr><td><span class="tag done">v2</span></td><td>Ward with en-suite rooms, small A&amp;E with an ambulance entrance, 4 m link corridor (HBN 04-01, 15-01, 00-04)</td></tr>
+          <tr><td><span class="tag todo">next</span></td><td>New SLAM survey maps of the version 2 building. The ground-truth map is up to date.</td></tr>
+          <tr><td><span class="tag todo">next</span></td><td>Remaining guidance gaps: wider bedroom doors, an A&amp;E decontamination room and children's area, lift modes for emergency beds and theatres</td></tr>
           <tr><td><span class="tag part">partial</span></td><td>Controller: the training of stage A1 (stand) is complete. Distillation, export, walking and motion tracking are next.</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Simulated patient personas: train human characters that act as patients in the simulated hospital. Researchers can then study robot-human interaction in simulation, before tests with people.</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Data from the simulators to train and test learned world models</td></tr>
@@ -240,6 +304,7 @@
   author  = {Bangalore Kumaraswamy, Rakshith},
   title   = {hospital-sim: Master repository of a humanoid robot stack in a simulated hospital},
   year    = {2026},
+  version = {2.0},
   url     = {https://github.com/Bkrakshith/hospital-sim},
   license = {Apache-2.0}
 }</pre>

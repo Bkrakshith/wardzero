@@ -37,3 +37,8 @@ The page text and code have the Apache License 2.0. The videos and images show t
 own licences. Refer to `NOTICE`.
 
 Built by: Rakshith Bangalore Kumaraswamy
+
+## Versions
+
+- Version 2.0 (this page): the hospital is closer to UK hospital guidance. It adds fire doors, bed lifts, a ward with en-suite rooms and a small A&E.
+- Version 1.0: the original page, kept at `v1/` and in the tag `v1.0`.
