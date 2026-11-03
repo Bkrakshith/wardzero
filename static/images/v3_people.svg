@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" font-family="Noto Sans, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6472"/>
+    </marker>
+    <style>
+      .box{fill:#ffffff;stroke:#c9d1dc;stroke-width:1.5}
+      .in{fill:#eef5ff;stroke:#7aa7e0}
+      .core{fill:#fff7e8;stroke:#e3a33b;stroke-width:2}
+      .sim{fill:#eefaf2;stroke:#5bb57c}
+      .off{fill:#f4f1fb;stroke:#9a83cf}
+      .grpbox{fill:#fffdf8;stroke:#e3a33b;stroke-width:1.5;stroke-dasharray:6 5}
+      .t{font-size:17px;font-weight:700;fill:#1f2733}
+      .s{font-size:13px;fill:#4a5462}
+      .l{font-size:12.5px;fill:#5b6472;paint-order:stroke;stroke:#ffffff;stroke-width:4px;stroke-linejoin:round}
+      .grp{font-size:13px;font-weight:700;fill:#8a93a1;letter-spacing:1px}
+      .e{stroke:#5b6472;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .d{stroke:#5b6472;stroke-width:1.6;fill:none;marker-end:url(#a);marker-start:url(#a)}
+      .r{stroke:#9aa3b0;stroke-width:1.3;fill:none;stroke-dasharray:4 4;marker-end:url(#a)}
+      .fair{stroke:#c0392b;stroke-width:2;stroke-dasharray:8 6}
+      .fairt{font-size:13px;font-weight:700;fill:#c0392b;letter-spacing:1px}
+    </style>
+  </defs>
+
+  <!-- scenario column -->
+  <text x="20" y="104" class="grp">SCENARIO</text>
+  <rect x="20" y="118" width="200" height="82" rx="10" class="box in"/>
+  <text x="34" y="144" class="t">Director</text>
+  <text x="34" y="166" class="s">storyboard beats, cards</text>
+  <text x="34" y="186" class="s">seeded random events</text>
+
+  <rect x="50" y="240" width="170" height="66" rx="10" class="box in"/>
+  <text x="62" y="266" class="t">Control panel</text>
+  <text x="62" y="288" class="s">browser, sends cards</text>
+
+  <rect x="50" y="340" width="170" height="66" rx="10" class="box in"/>
+  <text x="62" y="366" class="t">Storyboard</text>
+  <text x="62" y="388" class="s">starts with the scene</text>
+
+  <path class="e" d="M135,240 L135,202"/>
+  <path class="e" d="M50,373 L32,373 L32,202"/>
+
+  <!-- director to world, over the top -->
+  <path class="e" d="M120,118 L120,58 L770,58 L770,148"/>
+  <text x="425" y="50" class="l" text-anchor="middle">world events: arrivals, announcements, wet floor</text>
+
+  <!-- people group -->
+  <rect x="280" y="80" width="290" height="360" rx="14" class="grpbox"/>
+  <text x="296" y="104" class="grp">PEOPLE (5, ONE MIND EACH)</text>
+
+  <rect x="300" y="118" width="250" height="86" rx="10" class="box core"/>
+  <text x="314" y="144" class="t">Mind</text>
+  <text x="314" y="166" class="s">LangGraph on Claude or OpenAI</text>
+  <text x="314" y="186" class="s">observe · recall · decide · act</text>
+
+  <rect x="300" y="232" width="250" height="86" rx="10" class="box core"/>
+  <text x="314" y="258" class="t">Memory</text>
+  <text x="314" y="280" class="s">short-term and long-term (SQLite)</text>
+  <text x="314" y="300" class="s">RAG on research notes · reset</text>
+
+  <rect x="300" y="346" width="250" height="78" rx="10" class="box core"/>
+  <text x="314" y="372" class="t">Reflexes</text>
+  <text x="314" y="394" class="s">cough, fidget, turn to a voice</text>
+  <text x="314" y="412" class="s">no AI, every tick</text>
+
+  <path class="d" d="M425,206 L425,230"/>
+  <path class="e" d="M220,159 L278,159"/>
+  <text x="249" y="150" class="l" text-anchor="middle">nudges</text>
+
+  <!-- world -->
+  <text x="670" y="140" class="grp">WORLD</text>
+  <rect x="670" y="150" width="200" height="120" rx="10" class="box sim"/>
+  <text x="684" y="176" class="t">Simulator</text>
+  <text x="684" y="198" class="s">now: stand-in 2D sim</text>
+  <text x="684" y="218" class="s">next: Isaac Sim bodies</text>
+  <text x="684" y="246" class="s">positions · sound · signs</text>
+
+  <path class="e" d="M570,178 L668,178"/>
+  <text x="619" y="170" class="l" text-anchor="middle">intent, say</text>
+  <path class="e" d="M670,230 L572,230"/>
+  <text x="621" y="250" class="l" text-anchor="middle">observations</text>
+  <path class="e" d="M550,385 L770,385 L770,272"/>
+  <text x="660" y="377" class="l" text-anchor="middle">coughs, gaze</text>
+
+  <!-- fairness boundary and robot -->
+  <line x1="930" y1="80" x2="930" y2="440" class="fair"/>
+  <text x="930" y="462" class="fairt" text-anchor="middle">FAIRNESS BOUNDARY</text>
+
+  <text x="990" y="140" class="grp">ROBOT</text>
+  <rect x="990" y="150" width="190" height="100" rx="10" class="box off"/>
+  <text x="1004" y="176" class="t">Robot</text>
+  <text x="1004" y="198" class="s">G1 or reception robot</text>
+  <text x="1004" y="218" class="s">hears and speaks</text>
+
+  <path class="e" d="M870,184 L988,184"/>
+  <text x="930" y="176" class="l" text-anchor="middle">/g1/audio/heard</text>
+  <path class="e" d="M990,232 L872,232"/>
+  <text x="930" y="252" class="l" text-anchor="middle">/g1/speech/say</text>
+
+  <text x="990" y="288" class="s">The robot gets only what a</text>
+  <text x="990" y="306" class="s">real robot can sense. It cannot</text>
+  <text x="990" y="324" class="s">read minds or scenario topics.</text>
+  <text x="990" y="342" class="s"><tspan font-family="monospace">hhumans audit</tspan> checks this.</text>
+
+  <!-- recording -->
+  <rect x="280" y="482" width="590" height="62" rx="10" class="box"/>
+  <text x="296" y="508" class="t">Run recording</text>
+  <text x="296" y="530" class="s">every topic is logged · replay exactly · replay the decisions · run again from a memory snapshot</text>
+  <path class="r" d="M425,442 L425,480"/>
+  <path class="r" d="M840,272 L840,480"/>
+</svg>

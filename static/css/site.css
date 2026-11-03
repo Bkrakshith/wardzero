@@ -67,3 +67,7 @@ pre.bibtex { background: #fff; border: 1px solid var(--line); border-radius: 8px
 .v1-banner { background: #fff4e0; color: #5c3d00; text-align: center; padding: .6rem 1rem; font-size: .95rem; }
 @media (max-width: 900px) { .v2-gallery { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .v2-gallery { grid-template-columns: 1fr; } }
+
+/* version 3 */
+.section.v3 { background: linear-gradient(180deg, #fff8ec 0%, #ffffff 100%); border-top: 1px solid var(--line); }
+.version-pill.v3 { background: #b4620e; }
