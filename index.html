@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients</title>
-  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. Version 3 adds simulated patients and visitors with AI minds, memory and reflexes, who ask the robot for directions. Version 2 follows UK hospital guidance more closely: fire doors, bed lifts, a ward and a small A&amp;E.">
+  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. Version 3 adds simulated patients, visitors and staff with AI minds and memory, and a Scenario Studio to test your own robot against them. Version 2 follows UK hospital guidance more closely: fire doors, bed lifts, a ward and a small A&amp;E.">
   <meta property="og:title" content="WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bkrakshith.github.io/wardzero/">
@@ -27,6 +27,7 @@
       <p class="publication-authors">Built by: <a href="https://github.com/Bkrakshith">Rakshith Bangalore Kumaraswamy</a></p>
       <div class="link-buttons">
         <a class="button is-dark is-rounded" href="https://github.com/Bkrakshith/hospital-sim/tree/v3"><span class="icon"><i class="fab fa-github"></i></span><span>Code (v3)</span></a>
+        <a class="button is-dark is-rounded" href="#try"><span class="icon"><i class="fas fa-robot"></i></span><span>Test your robot</span></a>
         <a class="button is-light is-rounded" href="v1/"><span class="icon"><i class="fas fa-clock-rotate-left"></i></span><span>Version 1.0</span></a>
         <a class="button is-dark is-rounded" href="#repos"><span class="icon"><i class="fas fa-cubes"></i></span><span>Repositories</span></a>
       </div>
@@ -37,7 +38,7 @@
 
 <nav class="section-nav">
   <div class="container">
-    <a href="#overview">Overview</a><a href="#v3">Version 3</a><a href="#v2">Version 2</a><a href="#world">World</a><a href="#simulation">Simulation</a>
+    <a href="#overview">Overview</a><a href="#v3">Version 3</a><a href="#try">Test your robot</a><a href="#v2">Version 2</a><a href="#world">World</a><a href="#simulation">Simulation</a>
     <a href="#training">Training</a><a href="#teleop">Teleoperation and safety</a><a href="#autonomy">Autonomy</a>
     <a href="#status">Status</a><a href="#disclaimer">Disclaimer</a>
   </div>
@@ -53,8 +54,8 @@
       their own robot, controller or task.</p>
       <p>The simulated hospital has a surgical wing. The wing has corridors, pre-operative bays, a recovery ward, a
       sterile store, a scrub room and an operating theatre. Version 2 adds a ward with en-suite rooms, a small A&amp;E
-      department, fire doors and bed lifts. Version 3 adds simulated people: patients and visitors who think,
-      remember and ask the robot for help.</p>
+      department, fire doors and bed lifts. Version 3 adds simulated people who think,
+      remember and ask the robot for help, and a Scenario Studio to test a robot against them.</p>
       <p>All parts use the low-level interface of the real robot. The controller sends motor targets on
       <code>/lowcmd</code> at 500 Hz. It reads the joint states on <code>/lowstate</code>. Because of this, the same
       software runs in MuJoCo, in Isaac Sim and on the real robot.</p>
@@ -89,42 +90,73 @@
 <section class="section v3" id="v3">
   <div class="container is-max-desktop">
     <span class="version-pill v3">Version 3.0</span>
-    <h2 class="title is-3">Version 3: simulated people</h2>
+    <h2 class="title is-3">Version 3: simulated people and the Scenario Studio</h2>
     <div class="content">
-      <p>A hospital robot works near people. Patients and visitors ask for directions, cough, walk slowly and do not
-      always hear the robot. Version 3 adds simulated people to the hospital, so that a robot can meet them in
-      simulation before it meets real people.</p>
-      <p>Version 3 starts in the main-entrance waiting area with five people: two patients with a cough (one older
-      and breathless), the companion of the older patient, an older patient with a stick who is hard of hearing, and
-      an anxious first-time patient. During the scene, a visitor arrives and asks the way to the ward.</p>
+      <p>A hospital robot works near people. Patients and visitors ask for directions, ask for a nurse, walk slowly
+      and do not always hear the robot. Version 3 adds simulated people to the hospital, so that a robot can meet
+      them in simulation before it meets real people.</p>
+      <p>The Scenario Studio is a browser tool to test a robot against these people. A user picks a scenario, brings
+      their own robot or uses the built-in Unitree G1, and starts a run. After the run, a report tells the user if the
+      robot solved the problems that the people brought to it.</p>
     </div>
-    <img class="figure-img" src="static/images/v3_people.svg" alt="Version 3 architecture. The director sends nudges to the people and events to the simulator. Each person has a mind, memory and reflexes. The people send intents and speech to the simulator and receive observations. The robot is behind a fairness boundary: it hears sounds on /g1/audio/heard and speaks on /g1/speech/say. Every topic is recorded for replay.">
+    <div class="v2-gallery studio">
+      <figure class="v2-card"><img src="static/images/v3/studio_scene.jpg" alt="Studio Scene page. Three people from the Reception and guide scenario on the map of the main lobby, with their roles and moods." loading="lazy"><figcaption><strong>Scene.</strong> The Reception and guide scenario: an anxious visitor, a sad patient and a hurried visitor.</figcaption></figure>
+      <figure class="v2-card"><img src="static/images/v3/studio_run.jpg" alt="Studio Run page during a run. The robot greets a patient on the hospital map, and the live cost and the Isaac Sim preview show at the top." loading="lazy"><figcaption><strong>Run.</strong> The robot greets a patient. The live cost and the Isaac Sim preview show during the run.</figcaption></figure>
+    </div>
     <div class="table-container" style="margin-top:1.5rem">
       <table class="table is-fullwidth">
         <thead><tr><th>Part</th><th>What version 3 adds</th></tr></thead>
         <tbody>
-          <tr><td>Mind</td><td>Each person has a LangGraph agent on Claude or OpenAI. The person observes, recalls, decides and then acts or continues. A new sound, the robot's voice, a sign or a called name starts a decision. The default models are Claude Opus 5.5 to decide and Claude Haiku 5.5 to summarise.</td></tr>
-          <tr><td>Reflexes</td><td>Coughs, fidgets and turns to a voice run on each tick with no AI. The scene stays alive between decisions.</td></tr>
-          <tr><td>Memory</td><td>Short-term memory for the run. Long-term memory carries across runs. A command resets it, and snapshots restore it. A small knowledge base from the project research notes gives the people realistic behaviour (RAG).</td></tr>
-          <tr><td>Personas</td><td>One file holds the personas: age, condition, cough rate, mobility, hearing, patience and anxiety. The values are sampled for each person, so many people can share one persona.</td></tr>
-          <tr><td>Storyboard</td><td>A storyboard starts with the scene. For example: at 5 minutes the clinics are late, at 8 minutes a ward visitor arrives, at 25 minutes a patient needs the toilet.</td></tr>
-          <tr><td>Control panel</td><td>A browser panel shows the people and the timeline. It sends scenario cards to test the robot: lost visitor, toilet request, way out, name called, coughing fit, hard of hearing and more. Seeded random events are optional.</td></tr>
-          <tr><td>Fairness</td><td>The robot gets only what a real robot can sense. It hears sounds on <code>/g1/audio/heard</code> with no speaker identity and speaks on <code>/g1/speech/say</code>. It cannot read the people's minds or the scenario topics. <code>hhumans audit</code> checks the live ROS 2 graph.</td></tr>
-          <tr><td>Recording</td><td>Each run is recorded. A run can replay exactly, replay the decisions with new physics, or run again from the same memory snapshot.</td></tr>
-          <tr><td>Keys</td><td>Each user uses their own Claude or OpenAI account. The keys stay in the system keyring. They never go into logs, topics or git. The system does not run without a key.</td></tr>
+          <tr><td>People</td><td>Each person has a role (ward nurse, receptionist, patient, visitor, surgeon or porter), a mood and a memory. An AI model on Claude or OpenAI decides what the person does next. The default models are Claude Sonnet 5.5 to decide and Claude Haiku 5.5 to summarise.</td></tr>
+          <tr><td>Word of mouth</td><td>People tell each other what they think of the robot. A visitor who got lost can tell the next person in the waiting room. A slider sets how often this happens.</td></tr>
+          <tr><td>Memory</td><td>Memory can carry between repeat runs. A robot that let a person down starts the next run with less trust. A command resets the memory.</td></tr>
+          <tr><td>Scenarios</td><td>Reception and guide, A&amp;E waiting room, meal round, specimen run, call bell at night, visiting-hours rush, wandering patient, ward fire and fire evacuation. Each scenario has success criteria.</td></tr>
+          <tr><td>Your robot</td><td>The user gives the robot's URDF and its sensors (camera, lidar, microphone and speaker). The robot's controller connects over ROS 2. The Studio shows the topics to use and three lights that show the connection.</td></tr>
+          <tr><td>Simulators</td><td>Quick 2D is a fast simulator with no rendering and no GPU. Isaac Sim 6.0 shows the 3D hospital with a live preview, and can record videos and a rosbag.</td></tr>
+          <tr><td>Report</td><td>Pass or fail for each success criterion: problems solved, near misses, contacts, forbidden areas, unanswered requests, response time and mood changes. The report also gives suggestions for the robot.</td></tr>
+          <tr><td>Fairness</td><td>The robot gets only what a real robot can sense. It cannot read the people's minds or the scenario. <code>hhumans audit</code> checks the live ROS 2 graph.</td></tr>
+          <tr><td>Cost</td><td>Each user uses their own Claude or OpenAI account, and the key stays in the system keyring. A spending limit stops the run when it is reached. A free test mode needs no key.</td></tr>
         </tbody>
       </table>
     </div>
     <div class="content">
-      <p>All parts talk over ROS 2 Humble. The simulator waits for the minds when they are slow, so a scene can run
-      slower than real time on an RTX 3070. The long-term target is an RTX 5090. 480 unit tests and an end-to-end
-      test of a short storyboard pass.</p>
-      <p><strong>Version 3 is the first step.</strong> The people move in a stand-in 2D simulator, and a placeholder
-      reception robot answers them. Next: human bodies in Isaac Sim that the lidar and the cameras can see, camera and
-      speech perception for the robot, and tests of the G1 against the scenarios.</p>
+      <p><strong>The built-in G1 is a placeholder.</strong> It can see, hear and talk, but it has no walking
+      controller yet. It cannot walk a person to a room or press a call button, so the tasks that need this fail.
+      The Studio is for testing the user's own robot.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="try">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Test your own robot</h2>
+    <div class="content">
+      <p>Do these steps on a computer with Ubuntu 22.04, ROS 2 Humble and Python 3.10. Quick 2D runs need no GPU.
+      The full steps are in the <a href="https://github.com/Bkrakshith/hospital-sim-agents#quick-start">quick
+      start</a>.</p>
+      <ol>
+        <li><strong>Install.</strong>
+<pre><code>git clone --recurse-submodules -b v3 https://github.com/Bkrakshith/hospital-sim.git WardZero
+cd WardZero
+python3 -m venv --system-site-packages .venv
+source env.sh
+pip install -e "hospital-sim-agents[voice]"</code></pre></li>
+        <li><strong>Check the computer.</strong> Run <code>hhumans doctor</code>. Each problem comes with the steps that fix it.</li>
+        <li><strong>Try it free.</strong> Run <code>WARDZERO_TEST_FAKE_LLM=1 hhumans studio</code>. A fake model
+        replaces the AI, and nothing is billed.</li>
+        <li><strong>Run the demo scenario.</strong> Run <code>hhumans keys set claude</code>, then
+        <code>hhumans studio</code>. Choose <em>Reception and guide</em>, the <em>Built-in G1</em>,
+        <em>Quick 2D</em>, 1 minute and a spending limit of $5. Press Start, then read the report. A one-minute run
+        costs less than $1.</li>
+        <li><strong>Add your robot.</strong> On the Robot page, give the URDF folder, set the sensors and connect
+        your controller over ROS 2. Run the same scenario and compare the reports.</li>
+        <li><strong>Optional: Isaac Sim.</strong> Install Isaac Sim 6.0 and the NVIDIA asset packs, build the
+        collision file once with <code>scripts/build_collision_usd.py</code>, then choose Isaac Sim on the Run
+        page.</li>
+      </ol>
     </div>
     <p class="version-links">Version 3 code: branch <a href="https://github.com/Bkrakshith/hospital-sim/tree/v3"><code>v3</code></a>
-    of hospital-sim and the new repository <a href="https://github.com/Bkrakshith/hospital-sim-agents">hospital-sim-agents</a>.</p>
+    of hospital-sim and the repository <a href="https://github.com/Bkrakshith/hospital-sim-agents">hospital-sim-agents</a>.</p>
   </div>
 </section>
 
@@ -232,7 +264,7 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Controller training</h2>
     <div class="content">
-      <p>PPO trains the whole-body controller in MuJoCo MJX. 2048 robots train in parallel on one RTX 3070. The
+      <p>PPO trains the whole-body controller in MuJoCo MJX. 2048 robots train in parallel on one GPU. The
       curriculum has three stages. Stage A teaches the robot to stand. Stage B teaches it to walk with arm targets.
       Stage C teaches it to follow full-body motions.</p>
       <p>A teacher policy with privileged data trains a student policy. The student uses only the sensors of the real
@@ -244,7 +276,7 @@
     <img class="figure-img" src="static/images/training_curve.svg" alt="Survival against training steps for stage A1. The curve passes the 0.95 gate at 39 million steps.">
     <p class="has-text-centered" style="color:var(--muted);font-size:.92rem;margin:.5rem 0 1.5rem">Survival in stage A1
     against training steps. The green ring shows the checkpoint that passed the gate.</p>
-    <figure class="clip"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/05_gait_training.jpg"><source src="static/videos/05_gait_training.mp4" type="video/mp4"></video><figcaption><span class="clip-title">Controller training: learn to stand.</span> <span class="clip-sub">Stage A1: survival 0.05 → 0.97 in 39 million steps.</span> PPO trains the controller in MuJoCo MJX. 2048 robots train in parallel on one RTX 3070. Stage A1 took approximately 1 hour.<a class="repo-link" href="https://github.com/Bkrakshith/g1-whole-body-rl"><i class="fab fa-github"></i> g1-whole-body-rl</a><details><summary>Details</summary><ul><li>Left: the policy before training. It falls after 1.0 s.</li><li>Right: the policy after 39 million steps. It stands for the full 11 s test. The maximum tilt is 2.7 degrees.</li><li>The two policies run in standard MuJoCo. They use the same test as the training gates.</li><li>Walking (stage B) and motion tracking (stage C) are not trained yet.</li></ul></details></figcaption></figure>
+    <figure class="clip"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/05_gait_training.jpg"><source src="static/videos/05_gait_training.mp4" type="video/mp4"></video><figcaption><span class="clip-title">Controller training: learn to stand.</span> <span class="clip-sub">Stage A1: survival 0.05 → 0.97 in 39 million steps.</span> PPO trains the controller in MuJoCo MJX. 2048 robots train in parallel on one GPU. Stage A1 took approximately 1 hour.<a class="repo-link" href="https://github.com/Bkrakshith/g1-whole-body-rl"><i class="fab fa-github"></i> g1-whole-body-rl</a><details><summary>Details</summary><ul><li>Left: the policy before training. It falls after 1.0 s.</li><li>Right: the policy after 39 million steps. It stands for the full 11 s test. The maximum tilt is 2.7 degrees.</li><li>The two policies run in standard MuJoCo. They use the same test as the training gates.</li><li>Walking (stage B) and motion tracking (stage C) are not trained yet.</li></ul></details></figcaption></figure>
     <figure class="clip"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/05b_ultra_teacher.jpg"><source src="static/videos/05b_ultra_teacher.mp4" type="video/mp4"></video><figcaption><span class="clip-title">Reference policy: ULTRA teacher.</span> <span class="clip-sub">Third-party policy on the WardZero robot model.</span> This clip shows the released ULTRA teacher policy on the WardZero G1 model in standard MuJoCo. It is a third-party policy with a non-commercial licence. WardZero uses it only to examine the robot model.<a class="repo-link" href="https://github.com/Bkrakshith/g1-whole-body-rl"><i class="fab fa-github"></i> g1-whole-body-rl</a><details><summary>Details</summary><ul><li>Left: the robot follows a motion clip and moves a box.</li><li>Right: the robot stays upright through pushes of 200 N.</li><li>Result on 2026-10-09: approximately 90% of the clips complete. The mean body position error is approximately 5.6 cm.</li><li>These results are the same as on the original ULTRA robot.</li></ul></details></figcaption></figure>
   </div>
 </section>
@@ -320,11 +352,11 @@
           <tr><td><span class="tag done">done</span></td><td>Mapping and navigation</td></tr>
           <tr><td><span class="tag done">v2</span></td><td>Fire doors, fire compartments and bed lifts with physics in the two simulators (HTM 05-02, HTM 08-02)</td></tr>
           <tr><td><span class="tag done">v2</span></td><td>Ward with en-suite rooms, small A&amp;E with an ambulance entrance, 4 m link corridor (HBN 04-01, 15-01, 00-04)</td></tr>
-          <tr><td><span class="tag done">v3</span></td><td>Simulated people in the waiting area: AI minds, memory across runs, reflexes, storyboard, scenario control panel, fairness rule and run recording</td></tr>
+          <tr><td><span class="tag done">v3</span></td><td>Simulated people and the Scenario Studio: AI minds, memory across runs, word of mouth, nine scenarios, bring-your-own robot, Quick 2D and Isaac Sim runs, reports and run recording</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>New SLAM survey maps of the version 2 building. The ground-truth map is up to date.</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Remaining guidance gaps: wider bedroom doors, an A&amp;E decontamination room and children's area, lift modes for emergency beds and theatres</td></tr>
           <tr><td><span class="tag part">partial</span></td><td>Controller: the training of stage A1 (stand) is complete. Distillation, export, walking and motion tracking are next.</td></tr>
-          <tr><td><span class="tag part">partial</span></td><td>Simulated people: the minds, memory and scenarios are complete (version 3). Next: human bodies in Isaac Sim that the robot's lidar and cameras can see, and tests of the G1 against the scenarios.</td></tr>
+          <tr><td><span class="tag part">partial</span></td><td>Simulated people: the minds, memory, scenarios and bodies in Isaac Sim are complete (version 3). Next: a walking controller for the built-in G1, so that it can guide people and press buttons.</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Data from the simulators to train and test learned world models</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Sim-to-real transfer and tests on a real robot. All the results on this page come from simulation only.</td></tr>
         </tbody>
