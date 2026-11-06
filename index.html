@@ -38,7 +38,7 @@
 
 <nav class="section-nav">
   <div class="container">
-    <a href="#overview">Overview</a><a href="#v3">Version 3</a><a href="#try">Test your robot</a><a href="#v2">Version 2</a><a href="#world">World</a><a href="#simulation">Simulation</a>
+    <a href="#overview">Overview</a><a href="#v3">Version 3</a><a href="#try">Test your robot</a><a href="#v2">Version 2</a><a href="#regulations">UK regulations</a><a href="#world">World</a><a href="#simulation">Simulation</a>
     <a href="#training">Training</a><a href="#teleop">Teleoperation and safety</a><a href="#autonomy">Autonomy</a>
     <a href="#status">Status</a><a href="#disclaimer">Disclaimer</a>
   </div>
@@ -213,6 +213,43 @@ pip install -e "hospital-sim-agents[voice]"</code></pre></li>
     <p class="version-links">Version 2 code: branch <a href="https://github.com/Bkrakshith/hospital-sim/tree/v2"><code>v2</code></a>.
     Version 1.0 code: tag <a href="https://github.com/Bkrakshith/hospital-sim/tree/v1.0"><code>v1.0</code></a>.
     Version 1.0 page: <a href="v1/">archived copy</a>.</p>
+  </div>
+</section>
+
+<section class="section regs" id="regulations">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">UK regulation features in the hospital</h2>
+    <div class="content">
+      <p>WardZero builds these UK guidance rules into the simulated hospital. A robot meets them in the same way as in a real building: doors that close, lifts with timing, and corridors sized for beds. Each card names the guidance and the number that the model uses.</p>
+    </div>
+    <div class="reg-grid">
+      <article class="reg-card"><h3>Fire compartments</h3><p class="reg-ref">HTM 05-02 3.9, 3.11</p><ul><li>The main building has 3 fire compartments on about 1781 m². The guidance asks for at least 3 above 1000 m².</li><li>C1 (west, A&amp;E) is 330 m². C2 (central) is 729 m². C3 (east, ward) is 444 m².</li><li>Each compartment holds at most 20 beds. C3 has 6 beds. C1 has 8 trolleys.</li><li>The surgical wing is a fourth compartment behind an FD60S doorset in the link.</li></ul></article>
+      <article class="reg-card"><h3>Fire door ratings</h3><p class="reg-ref">HTM 05-02 Table C1, Appendix C</p><ul><li>Compartment doors are FD60S. Stair, lift-lobby, sub-compartment and hazard-room doors are FD30S.</li><li>All fire doors have closers. Magnets hold circulation doors open. The magnets release on the fire alarm.</li><li>The main building adds 15 doorsets. The wing has 7. A pushed leaf closes in about 6.7 s.</li></ul></article>
+      <article class="reg-card"><h3>Stairs</h3><p class="reg-ref">HTM 05-02 Appendix C</p><ul><li>Both up-stairs are enclosed with FD30S self-closing doors.</li><li>Nothing holds the stair doors open. The doors open out of the stair.</li></ul></article>
+      <article class="reg-card"><h3>Hazard rooms</h3><p class="reg-ref">HTM 05-02 Table 6, 5.40-5.42</p><ul><li>Dirty utilities, cleaners' room, central store, linen rooms and pharmacies have FD30S doors.</li><li>Four doors stay shut on their closers. Four close by themselves after use.</li></ul></article>
+      <article class="reg-card"><h3>Escape and final exits</h3><p class="reg-ref">HTM 05-02 3.27, 3.34, 3.59-3.60</p><ul><li>Final exits are level and open outwards. Two exits have push bars.</li><li>Each wing sub-compartment has two exits. The longest wing run to a sub-compartment door is 21.0 m. The limit is 30 m (3.35).</li></ul></article>
+      <article class="reg-card"><h3>Bed lifts</h3><p class="reg-ref">HTM 08-02 4.19, 5.23; HBN 00-04 6.19</p><ul><li>Duplex pairs. Car 1800 x 2700 mm, 2500 kg. Door 1400 x 2100 mm, centre-opening.</li><li>Dwell 7 s. Door detection by 8 light-curtain beams.</li><li>Closing force limit 142.5 N per panel (limit 150 N). Peak closing energy 4.2 J (limit 10 J).</li><li>The lift opens into a protected lobby, not onto the corridor. The alarm recalls the cars.</li></ul></article>
+      <article class="reg-card"><h3>Circulation and beds</h3><p class="reg-ref">HBN 00-04 3.9, 3.10, 8.21</p><ul><li>The link corridor is 4 m on the grid and 3.8 m clear. Two beds passing need 2960 mm.</li><li>The link was 2 m. It was too narrow, because one bed needs 2.15 m clear.</li><li>Double doors on bed routes need 1740 mm clear. The link compartment doorway has 2.29 to 2.34 m.</li></ul></article>
+      <article class="reg-card"><h3>In-patient ward</h3><p class="reg-ref">HBN 04-01 3.1, 4.28, 4.51, 5.24</p><ul><li>6 single bedrooms of 19.7 to 19.9 m². The guidance asks for 19 m².</li><li>Every bedroom has an en-suite of 5.0 to 9.2 m². The guidance asks for 4.5 m².</li><li>A nurse base and 2 workstations with observation windows. The guidance asks for 1 per 4 beds.</li><li>Clean utility 19.9 m² (16 m²). Cleaners' room 10.3 m² (8 m²). Day room 10.4 m² (6 m² per 8 beds).</li></ul></article>
+      <article class="reg-card"><h3>Accident and emergency</h3><p class="reg-ref">HBN 15-01 17.2, 17.3, 17.20; HBN 00-03 7.23</p><ul><li>The ambulance entrance and the walk-in entrance are separate. Walk-in patients never pass the ambulance entrance.</li><li>The ambulance bay has a lit canopy. The route to resus is 23 m and avoids the waiting area.</li><li>Resus has 2 bays of 27.6 m². Walk-in reception has 15 seats in 27 m².</li></ul></article>
+      <article class="reg-card"><h3>Access</h3><p class="reg-ref">Approved Document M 3.10, 3.34</p><ul><li>Opening force is 30 N or less for the first 30 degrees. New leaves measure 9.6 to 12.4 N.</li><li>Landing call button at 1.00 m (guidance 900 to 1100 mm). Car buttons at 1.05 m and 1.15 m (900 to 1200 mm).</li><li>Fire door vision panels start 500 mm above the threshold.</li></ul></article>
+    </div>
+    <div class="content">
+      <h3 class="title is-5">What is not modelled yet</h3>
+      <ul>
+        <li>No fire engineer or clinical planner has reviewed the design. It is not an assessed design.</li>
+        <li>Walls carry no fire rating. Lift landing doors carry no fire rating.</li>
+        <li>The stairs have no protected lobbies. They discharge into a compartment, not to outside. The flights are 2.6 m wide and the model has no upper floors.</li>
+        <li>One alarm releases every magnet and recalls every lift. There is no alarm zoning.</li>
+        <li>The lifts have no emergency bed key switch and no theatre service mode.</li>
+        <li>The ward bedroom doors are 1.2 m wide. HBN 00-04 recommends 1.55 m for beds. Bed spaces are 3.6 x 3.37 m, not 3.6 x 3.7 m.</li>
+        <li>The ward has 6 beds. The reference ward has 24.</li>
+        <li>The A&amp;E has no decontamination room, no children's area, no clinical decision unit and no cleaners' room.</li>
+        <li>The pharmacy hatches are unrated glazing. The ward pantry and relatives' room have no free-swing closers.</li>
+        <li>Handrails, wall protection and lift arrival signals are not modelled.</li>
+      </ul>
+      <p><strong>The model follows the listed guidance where this page states it. It is not certified, and it is not fully compliant with any guidance document.</strong> WardZero is for simulation only. The file <code>uk-guidance-compliance.md</code> in hospital-sim-env lists each check and each gap.</p>
+    </div>
   </div>
 </section>
 

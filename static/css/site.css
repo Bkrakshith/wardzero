@@ -73,3 +73,14 @@ pre.bibtex { background: #fff; border: 1px solid var(--line); border-radius: 8px
 .v2-gallery.studio .v2-card img { aspect-ratio: auto; object-fit: contain; border: 1px solid var(--line); }
 .section.v3 { background: linear-gradient(180deg, #fff8ec 0%, #ffffff 100%); border-top: 1px solid var(--line); }
 .version-pill.v3 { background: #b4620e; }
+
+/* UK regulation cards */
+.section.regs { background: #ffffff; border-top: 1px solid var(--line); }
+.reg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+.reg-card { border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.1rem; background: #f7faf8; min-width: 0; }
+.reg-card h3 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .15rem; color: var(--ink); }
+.reg-card .reg-ref { font-size: .8rem; color: var(--muted); margin: 0 0 .5rem; overflow-wrap: anywhere; }
+.reg-card ul { list-style: disc; margin: 0 0 0 1.1rem; font-size: .9rem; line-height: 1.5; }
+.reg-card li { margin-bottom: .3rem; }
+@media (max-width: 900px) { .reg-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .reg-grid { grid-template-columns: 1fr; } }
