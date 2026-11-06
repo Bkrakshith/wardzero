@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients</title>
-  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. Version 3 adds simulated patients, visitors and staff with AI minds and memory, and a Scenario Studio to test your own robot against them. Version 2 follows UK hospital guidance more closely: fire doors, bed lifts, a ward and a small A&amp;E.">
+  <meta name="description" content="WardZero is an open platform to build and test robot solutions in hospitals. Version 3 adds simulated patients, visitors and staff with AI minds and memory, and a Scenario Studio to test your own robot against them. Version 3.1 makes the built-in G1 walk with NVIDIA GEAR-SONIC, with physics doors and a receptionist. Version 2 follows UK hospital guidance more closely: fire doors, bed lifts, a ward and a small A&amp;E.">
   <meta property="og:title" content="WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bkrakshith.github.io/wardzero/">
@@ -26,7 +26,7 @@
       <h1 class="title publication-title">WardZero: The Simulated Hospital Where Robots Train Before They Meet Patients</h1>
       <p class="publication-authors">Built by: <a href="https://github.com/Bkrakshith">Rakshith Bangalore Kumaraswamy</a></p>
       <div class="link-buttons">
-        <a class="button is-dark is-rounded" href="https://github.com/Bkrakshith/hospital-sim/tree/v3"><span class="icon"><i class="fab fa-github"></i></span><span>Code (v3)</span></a>
+        <a class="button is-dark is-rounded" href="https://github.com/Bkrakshith/hospital-sim/tree/v3.1"><span class="icon"><i class="fab fa-github"></i></span><span>Code (v3.1)</span></a>
         <a class="button is-dark is-rounded" href="#try"><span class="icon"><i class="fas fa-robot"></i></span><span>Test your robot</span></a>
         <a class="button is-light is-rounded" href="v1/"><span class="icon"><i class="fas fa-clock-rotate-left"></i></span><span>Version 1.0</span></a>
         <a class="button is-dark is-rounded" href="#repos"><span class="icon"><i class="fas fa-cubes"></i></span><span>Repositories</span></a>
@@ -38,7 +38,7 @@
 
 <nav class="section-nav">
   <div class="container">
-    <a href="#overview">Overview</a><a href="#v3">Version 3</a><a href="#try">Test your robot</a><a href="#v2">Version 2</a><a href="#regulations">UK regulations</a><a href="#world">World</a><a href="#simulation">Simulation</a>
+    <a href="#overview">Overview</a><a href="#v31">Version 3.1</a><a href="#v3">Version 3</a><a href="#try">Test your robot</a><a href="#v2">Version 2</a><a href="#regulations">UK regulations</a><a href="#world">World</a><a href="#simulation">Simulation</a>
     <a href="#training">Training</a><a href="#teleop">Teleoperation and safety</a><a href="#autonomy">Autonomy</a>
     <a href="#status">Status</a><a href="#disclaimer">Disclaimer</a>
   </div>
@@ -55,7 +55,8 @@
       <p>The simulated hospital has a surgical wing. The wing has corridors, pre-operative bays, a recovery ward, a
       sterile store, a scrub room and an operating theatre. Version 2 adds a ward with en-suite rooms, a small A&amp;E
       department, fire doors and bed lifts. Version 3 adds simulated people who think,
-      remember and ask the robot for help, and a Scenario Studio to test a robot against them.</p>
+      remember and ask the robot for help, and a Scenario Studio to test a robot against them. Version 3.1 makes the
+      built-in G1 walk, so it can guide a person to a room.</p>
       <p>All parts use the low-level interface of the real robot. The controller sends motor targets on
       <code>/lowcmd</code> at 500 Hz. It reads the joint states on <code>/lowstate</code>. Because of this, the same
       software runs in MuJoCo, in Isaac Sim and on the real robot.</p>
@@ -83,6 +84,53 @@
         <li><strong>One safety layer.</strong> All input sources send requests to the mode manager. The mode manager uses a control lease, a watchdog, an emergency-stop gate and speed zones.</li>
         <li><strong>One building.</strong> One Python layout file defines the hospital. It makes the Isaac scene and the MuJoCo walls in the same world frame. A map from one simulator is correct in the other.</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section v3" id="v31">
+  <div class="container is-max-desktop">
+    <span class="version-pill v3">Version 3.1</span>
+    <h2 class="title is-3">Version 3.1: a walking robot that guides people</h2>
+    <div class="content">
+      <p>In version 3.0, the built-in G1 could see, hear and talk, but it could not walk. In version 3.1 it walks in
+      Isaac Sim. NVIDIA's GEAR-SONIC whole-body controller keeps it balanced while it follows its route. The robot
+      can now walk a person to the room that they ask for, and walk over to the receptionist to get help for a
+      person.</p>
+    </div>
+    <figure class="clip">
+      <video controls muted playsinline preload="none" poster="static/videos/v31_reception_guide.jpg">
+        <source src="static/videos/v31_reception_guide.mp4" type="video/mp4"></video>
+      <figcaption><span class="clip-title">Reception and guide in Isaac Sim.</span>
+      <span class="clip-sub">The G1 walks with GEAR-SONIC and guides a visitor to the ward.</span>
+      Priya asks the robot for a nurse. The robot walks to the receptionist and tells her. The receptionist goes to
+      Priya. Daniel asks for the ward. The robot walks with him through the hinged doors to the ward entrance, then
+      walks back to its post at the desk. The small view at the top right is the lobby from above.
+      <details><summary>Details</summary><ul>
+        <li>One recorded run of 5 minutes in Isaac Sim 6.0. The clip shows 66 seconds of it. The parts where the
+        follow camera went through a wall are cut out.</li>
+        <li>The people in this run use the free test mode with scripted lines. They do not use an AI model.</li>
+        <li>Results of the run: the robot did not fall, every request was answered, there were no contacts between
+        the robot and people, and the robot did not go into the forbidden area.</li>
+        <li>A run with a walking robot is slower than real time, because the physics runs at 200 Hz for the robot's
+        balance. The recorded video plays at normal speed.</li>
+      </ul></details>
+      <span class="credits">Whole-body controller: NVIDIA GEAR-SONIC (NVlabs GR00T-WholeBodyControl, NVIDIA Open Model License). The weights are downloaded separately and are not in the repository.</span>
+      </figcaption>
+    </figure>
+    <div class="table-container" style="margin-top:1.5rem">
+      <table class="table is-fullwidth">
+        <thead><tr><th>Part</th><th>What version 3.1 adds</th></tr></thead>
+        <tbody>
+          <tr><td>Walking G1</td><td>The built-in G1 walks in Isaac Sim with the released GEAR-SONIC model. No new training was necessary. The physics runs at 200 Hz and the controller at 50 Hz. Quick 2D runs do not need the controller.</td></tr>
+          <tr><td>Doors</td><td>The hinged doors on the route swing open by physics when a person or the robot pushes them. A door closer shuts them again. The robot goes through a door at walking speed.</td></tr>
+          <tr><td>Receptionist</td><td>Reception scenes add a live receptionist who sits behind the desk. The user can remove her from the cast. The robot can walk over and tell her about a person who needs staff.</td></tr>
+          <tr><td>Guiding</td><td>A person can follow the robot. The robot sets its speed so that the person can keep up. The report shows if each person arrived.</td></tr>
+          <tr><td>Placement</td><td>In the Studio, the user drags people and the robot on the map and turns them. <em>Start seated</em> puts a person in a waiting-area seat at the start.</td></tr>
+          <tr><td>Forbidden areas</td><td>The user draws rectangles that the robot must not enter. The robot's route goes around them, and the report counts each entry.</td></tr>
+          <tr><td>Camera</td><td>In every Isaac Sim scenario, the camera follows the robot.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -120,9 +168,8 @@
       </table>
     </div>
     <div class="content">
-      <p><strong>The built-in G1 is a placeholder.</strong> It can see, hear and talk, but it has no walking
-      controller yet. It cannot walk a person to a room or press a call button, so the tasks that need this fail.
-      The Studio is for testing the user's own robot.</p>
+      <p><strong>In version 3.0, the built-in G1 cannot walk.</strong> It can see, hear and talk, but the tasks that
+      need walking fail. Version 3.1 adds walking (see above). The Studio is for testing the user's own robot.</p>
     </div>
   </div>
 </section>
@@ -136,7 +183,7 @@
       start</a>.</p>
       <ol>
         <li><strong>Install.</strong>
-<pre><code>git clone --recurse-submodules -b v3 https://github.com/Bkrakshith/hospital-sim.git WardZero
+<pre><code>git clone --recurse-submodules -b v3.1 https://github.com/Bkrakshith/hospital-sim.git WardZero
 cd WardZero
 python3 -m venv --system-site-packages .venv
 source env.sh
@@ -152,10 +199,11 @@ pip install -e "hospital-sim-agents[voice]"</code></pre></li>
         your controller over ROS 2. Run the same scenario and compare the reports.</li>
         <li><strong>Optional: Isaac Sim.</strong> Install Isaac Sim 6.0 and the NVIDIA asset packs, build the
         collision file once with <code>scripts/build_collision_usd.py</code>, then choose Isaac Sim on the Run
-        page.</li>
+        page. Use an NVIDIA RTX GPU with 16 GB of graphics memory (RTX 4080 or better). To make the built-in G1
+        walk, download the GEAR-SONIC weights once with <code>scripts/fetch_sonic.py</code> (about 1 GB).</li>
       </ol>
     </div>
-    <p class="version-links">Version 3 code: branch <a href="https://github.com/Bkrakshith/hospital-sim/tree/v3"><code>v3</code></a>
+    <p class="version-links">Version 3.1 code: branch <a href="https://github.com/Bkrakshith/hospital-sim/tree/v3.1"><code>v3.1</code></a>
     of hospital-sim and the repository <a href="https://github.com/Bkrakshith/hospital-sim-agents">hospital-sim-agents</a>.</p>
   </div>
 </section>
@@ -352,7 +400,8 @@ pip install -e "hospital-sim-agents[voice]"</code></pre></li>
     <div class="content">
       <p>The master repository, hospital-sim, contains the interface contract, the environment script and the list
       of component repositories. It checks out the component repositories in one folder.</p>
-      <p>Version 3 is on the <code>v3</code> branch of hospital-sim and hospital-sim-agents. It uses the version 2
+      <p>Version 3.1 is on the <code>v3.1</code> branch of hospital-sim and hospital-sim-agents, and version 3.0
+      stays on the <code>v3</code> branch. It uses the version 2
       components. Version 2 is on the <code>v2</code> branch of hospital-sim, hospital-sim-env, g1-isaac-sim,
       g1-mujoco-sim and hospital-sim-ros2. Version 1.0 stays on the <code>main</code> branch, with the tag
       <code>v1.0</code>.</p>
@@ -390,6 +439,7 @@ pip install -e "hospital-sim-agents[voice]"</code></pre></li>
           <tr><td><span class="tag done">v2</span></td><td>Fire doors, fire compartments and bed lifts with physics in the two simulators (HTM 05-02, HTM 08-02)</td></tr>
           <tr><td><span class="tag done">v2</span></td><td>Ward with en-suite rooms, small A&amp;E with an ambulance entrance, 4 m link corridor (HBN 04-01, 15-01, 00-04)</td></tr>
           <tr><td><span class="tag done">v3</span></td><td>Simulated people and the Scenario Studio: AI minds, memory across runs, word of mouth, nine scenarios, bring-your-own robot, Quick 2D and Isaac Sim runs, reports and run recording</td></tr>
+          <tr><td><span class="tag done">v3.1</span></td><td>Walking G1 with NVIDIA GEAR-SONIC, physics doors, a receptionist, guiding, placement, start seated and forbidden areas</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>New SLAM survey maps of the version 2 building. The ground-truth map is up to date.</td></tr>
           <tr><td><span class="tag todo">next</span></td><td>Remaining guidance gaps: wider bedroom doors, an A&amp;E decontamination room and children's area, lift modes for emergency beds and theatres</td></tr>
           <tr><td><span class="tag part">partial</span></td><td>Controller: the training of stage A1 (stand) is complete. Distillation, export, walking and motion tracking are next.</td></tr>
