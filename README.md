@@ -1,6 +1,6 @@
 # WardZero
 
-**The Simulated Hospital Where Robots Train Before They Meet Patients**
+The simulated hospital where robots train before they meet patients.
 
 Project page: https://bkrakshith.github.io/wardzero/
 
